@@ -1,2 +1,28 @@
-
-<html>Test!</html>
+<!doctype html>
+<html style="background: #b2b2bb"><head>
+<title>YSmash Graphs Demo</title>
+<script src="ysmash.min.js"></script>
+  <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    p,h1{
+      margin:10px;
+    }
+  </style><body>
+<div style="width: 70%; margin-left:auto;margin-right:auto; background:white">
+<h1>Y-Smash Data Demo</h1>
+<canvas id="canvas"></canvas>
+  <p>
+    The data here is randomly generated, and the style is awful, but I threw
+    it together (literally in half an hour) as a quick sample of how we could
+    visualise some of the data from the league.
+  </p>
+  <p><button id="randomizeData">Load Next Player</button></p>
+  <p>
+    (This button pretends to be loading a new player's data, but it's
+    really just randomizing the graph again.)
+  </p>
+</html>
