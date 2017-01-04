@@ -1,115 +1,117 @@
 
-var chartColors = {
-  red: 'rgb(255, 226, 224)',
-  orange: 'rgb(255, 159, 64)',
-  yellow: 'rgb(255, 205, 86)',
-  green: 'rgb(75, 192, 192)',
-  blue: 'rgb(68, 211, 255)',
-  purple: 'rgb(153, 102, 255)',
-  grey: 'rgb(231,233,237)'
-};
+var chartColors = [
+  'rgb(255, 226, 224)',//red
+  'rgb(255, 159, 64)',//orange
+  'rgb(255, 205, 86)',//yellow
+  'rgb(75, 192, 192)',//green
+  'rgb(68, 211, 255)',//blue
+  'rgb(153, 102, 255)',//purple
+  'rgb(231,233,237)'//grey
+];
 
-function randomScalingFactor() {
-  return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-}
+var chartContents;
 
-function getData(){
-  var data = {
-    "Damage Recieved":[
-    -Math.abs(randomScalingFactor())/4,
-    -Math.abs(randomScalingFactor())/4,
-    -Math.abs(randomScalingFactor())/4,
-    -Math.abs(randomScalingFactor())/4,
-    -Math.abs(randomScalingFactor())/4,
-    -Math.abs(randomScalingFactor())/4,
-    -Math.abs(randomScalingFactor())/4
-    ],
-    "Damage Given":[
-    Math.abs(randomScalingFactor()),
-    Math.abs(randomScalingFactor()),
-    Math.abs(randomScalingFactor()),
-    Math.abs(randomScalingFactor()),
-    Math.abs(randomScalingFactor()),
-    Math.abs(randomScalingFactor()),
-    Math.abs(randomScalingFactor())
-    ],
-    "DG/DR to date":[
-
-    ]
-  }
-
-  var totalDamageRecieved = 0, totalDamageGiven = 0;
-
-  for(var i = 0; i < data['Damage Given'].length && i < data['Damage Recieved'].length; i++){
-    totalDamageRecieved += data['Damage Recieved'][i];
-    totalDamageGiven += data['Damage Given'][i];
-    data['DG/DR to date'][i] = Math.abs(totalDamageGiven / totalDamageRecieved);
-  }
-
-  return data;
-};
-
+//New stuff
 $(document).ready(function(){
 
-  var data = getData();
+  resetGraph('Select a Season');
 
-  var chartData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7"],
-    datasets: [{
-      type: 'line',
-      label: 'DG/DR to date',
-      borderColor: chartColors.yellow,
-      borderWidth: 2,
-      fill: false,
-      data: data['DG/DR to date']
-    }, {
-      type: 'bar',
-      label: 'Damage Recieved',
-      backgroundColor: chartColors.red,
-      data: data['Damage Recieved'],
-      borderColor: 'white',
-      borderWidth: 2
-    }, {
-      type: 'bar',
-      label: 'Damage Given',
-      backgroundColor: chartColors.blue,
-      data: data['Damage Given'],
-      borderColor: 'white',
-      borderWidth: 2
-    }]
-  };
-  var ctx = document.getElementById("canvas").getContext("2d");
-  window.myMixedChart = new Chart(ctx, {
-    type: 'bar',
-    data: chartData,
-    options: {
-        responsive: true,
-        title: {
-            display: true,
-            text: 'Damage Given / Recieved'
-        },
-        tooltips: {
-            mode: 'index',
-            intersect: true
-        },
-        scales: {
-            xAxes: [{
-                stacked: true,
-            }],
-            yAxes: [{
-                stacked: false
-            }]
-        }
-    }
-  });
 
-  $('#randomizeData').click(function(ev) {
-    console.log('clicked');
-    var newData = getData();
 
-    chartData.datasets.forEach(function(dataset) {
-      dataset.data = newData[dataset.label];
-    });
-    window.myMixedChart.update();
-  });
+
+
+  $('#season').change(function(){
+    //prepSeason($(this).val());
+    redrawGraph();
+  })
+
+
 })
+
+var resetGraph = function(title){
+  chartContents = {
+    type: 'bar',
+    data: {
+      labels: [],
+      datasets: []
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: title
+      },
+      tooltips: {
+        display:true
+      },
+      legend:{
+        onClick:function(){}
+      }
+    }
+  };
+  $('#canvasContainer').html('').html('<canvas id="canvas"></canvas>');
+  var ctx = document.getElementById("canvas").getContext("2d");
+  window.ySmashChart = new Chart(ctx, chartContents);
+}
+
+var prepSeason = function(prep){
+  var season = stats[prep];
+  for(stat in season.stats){
+    console.log(stat);
+  }
+  for(player in season.players){
+    console.log(player)
+  }
+}
+
+var redrawGraph = function(){
+  var season = stats[$('#season').val()];
+
+  var stat = 'dg-dr';
+  var players = ['anonano', 'pawnstar', 'splice'];
+  var data = [];
+  var labels = [];
+
+  //Get name of stat
+  var name;
+  if(typeof season.stats[stat] == 'function')
+    name = season.stats[stat]([]);
+  else
+    name = season.stats[stat];
+
+  //Figure out how many weeks of data we have
+  for(var i = 1; i <= season.weeks; i++)
+    labels.push('Week ' + i);
+
+  //Get each player
+  for(var i = 0, player; player = (i < players.length)?players[i]:false; i++){
+    if(!season.players.hasOwnProperty(player))
+      continue;
+
+    //Calculate this stat for them if necessary
+    if(typeof season.stats[stat] == 'function'){
+        season.stats[stat](season.players[player].weeks);
+    }
+
+    //Build their dataset
+    var dataset = {
+      label: season.players[player].name,
+      backgroundColor: chartColors[i],
+      data: season.players[player].weeks.map(function(week){return week[stat]})
+    };
+
+    //Add it
+    data.push(dataset);
+  }
+
+  //Update chart tile
+  chartContents.options.title.text = name;
+  //Update chart data
+  chartContents.data.datasets = data;
+  chartContents.data.labels = labels;
+  //Redraw
+  window.ySmashChart.destroy();
+  $('#canvasContainer').html('').html('<canvas id="canvas"></canvas>');
+  var ctx = document.getElementById("canvas").getContext("2d");
+  window.ySmashChart = new Chart(ctx, chartContents);
+}
