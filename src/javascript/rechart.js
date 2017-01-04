@@ -97,7 +97,7 @@ $(document).ready(function(){
                 stacked: true,
             }],
             yAxes: [{
-                stacked: true
+                stacked: false
             }]
         }
     }
