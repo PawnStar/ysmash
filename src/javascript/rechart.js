@@ -35,7 +35,7 @@ var statClick = function(ev){
 
   if($(this).hasClass('selected'))
     prepStat($(this).attr('data-stat'), true);
-  else {    
+  else {
     var players = $('.playerLink.selected').map(function(){return $(this).attr('data-player')});
     $('.statLink.selected').removeClass('selected');
     $(this).addClass('selected');
@@ -132,7 +132,7 @@ var prepStat = function(stat, preselect){
         return a.weeks[season.weeks-1][stat] - b.weeks[season.weeks-1][stat];
       else
         return b.weeks[season.weeks-1][stat] - a.weeks[season.weeks-1][stat];
-    });
+    }).slice(0,10);
   for(i in players){
     var player = players[i];
     hasPlayers = true;
