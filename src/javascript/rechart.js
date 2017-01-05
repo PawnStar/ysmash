@@ -21,7 +21,7 @@ $(document).ready(function(){
 
 
   $('#season').change(function(){
-    //prepSeason($(this).val());
+    prepSeason($(this).val());
     redrawGraph();
   })
 
@@ -56,12 +56,33 @@ var resetGraph = function(title){
 
 var prepSeason = function(prep){
   var season = stats[prep];
+
+  var hasStats = false;
+  $('#stats').empty();
   for(stat in season.stats){
-    console.log(stat);
+    if(!season.stats.hasOwnProperty(stat) || season.stats[stat] == null)
+      continue;
+    var name;
+    if(typeof season.stats[stat] == 'function')
+      name = season.stats[stat]([]);
+    else
+      name = season.stats[stat];
+
+    hasStats = true;
+    $('#stats').append('<li><a class="statLink" data-stat="' + stat + '" href="#"">' + name + '</a></li>');
   }
+  if(!hasStats) $('#stats').append('<li>Couldn\'t load stats</li>')
+
+
+  var hasPlayers = false;
+  $('#players').empty();
   for(player in season.players){
+    if(!season.players.hasOwnProperty(player))
+      continue;
+    hasPlayers = true;
     console.log(player)
   }
+  if(!hasPlayers) $('#players').append('<li>Couldn\'t load players</li>')
 }
 
 var redrawGraph = function(){
