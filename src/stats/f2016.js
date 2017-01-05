@@ -8,165 +8,45 @@ stats['f2016'] = {
     'numKills': null,
     'numDeaths': null,
     'dg-dr': function(weeks){
+      var totalGiven = 0, totalRecieved = 0;
       for(var i = 0; i < weeks.length; i++){
-        weeks[i]['dg-dr'] = weeks[i]['damageGiven'] / weeks[i]['damageRecieved'];
+        totalGiven += weeks[i]['damageGiven'];
+        totalRecieved += weeks[i]['damageRecieved'];
+        dgdr = totalGiven / totalRecieved;
+        if(!isFinite(dgdr))
+          weeks[i]['dg-dr'] = dgdr;
+        else
+          weeks[i]['dg-dr'] = dgdr;
       }
       return 'Damage Given/Recieved';
     },
     'killspan': function(weeks){
+      var totalTime = 0, totalKills = 0;
       for(var i = 0; i < weeks.length; i++){
-        weeks[i]['killspan'] = weeks[i]['totalTime'] / weeks[i]['numKills'];
+        totalTime += weeks[i]['totalTime'];
+        totalKills += weeks[i]['numKills'];
+        var killspan = totalTime / totalKills;
+        if(!isFinite(killspan))
+          weeks[i]['killspan'] = totalTime;
+        else
+          weeks[i]['killspan'] = killspan;
       }
       return 'Killspan';
     },
     'lifespan': function(weeks){
+      var totalTime = 0, totalDeaths = 0;
       for(var i = 0; i < weeks.length; i++){
-        weeks[i]['lifespan'] = weeks[i]['totalTime'] / weeks[i]['numDeaths'];
+        totalTime += weeks[i]['totalTime'];
+        totalDeaths += weeks[i]['numDeaths'];
+        lifespan = totalTime / totalDeaths;
+        if(!isFinite(lifespan))
+          weeks[i]['lifespan'] = totalTime;
+        else
+          weeks[i]['lifespan'] = lifespan;
       }
       return 'Lifespan';
     },
   },
-  players:{
-    'pawnstar': {
-      name: 'PawnStar',
-      weeks:[
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        }
-      ]
-    },
-    'splice': {
-      name: 'Splice',
-      weeks:[
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        }
-      ]
-    },
-    'anonano': {
-      name: 'Anonano',
-      weeks:[
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        },
-        {
-          damageGiven: 300,
-          damageRecieved: 200,
-          numKills: 4,
-          numDeaths: 6,
-          totalTime: 300
-        }
-      ]
-    }
-  }
+  invert:['killspan'],
+  players:{"player0":{"name":"Player 0","weeks":[{"damageGiven":292,"damageRecieved":311,"numKills":5,"numDeaths":6,"totalTime":108},{"damageGiven":288,"damageRecieved":314,"numKills":0,"numDeaths":3,"totalTime":65},{"damageGiven":316,"damageRecieved":320,"numKills":6,"numDeaths":5,"totalTime":80},{"damageGiven":304,"damageRecieved":273,"numKills":1,"numDeaths":1,"totalTime":67},{"damageGiven":301,"damageRecieved":286,"numKills":2,"numDeaths":6,"totalTime":73},{"damageGiven":326,"damageRecieved":317,"numKills":1,"numDeaths":6,"totalTime":82}]},"player1":{"name":"Player 1","weeks":[{"damageGiven":282,"damageRecieved":322,"numKills":1,"numDeaths":6,"totalTime":112},{"damageGiven":295,"damageRecieved":329,"numKills":1,"numDeaths":6,"totalTime":85},{"damageGiven":319,"damageRecieved":321,"numKills":1,"numDeaths":3,"totalTime":94},{"damageGiven":325,"damageRecieved":330,"numKills":5,"numDeaths":4,"totalTime":104},{"damageGiven":285,"damageRecieved":319,"numKills":5,"numDeaths":1,"totalTime":110},{"damageGiven":285,"damageRecieved":326,"numKills":5,"numDeaths":3,"totalTime":80}]},"player2":{"name":"Player 2","weeks":[{"damageGiven":324,"damageRecieved":301,"numKills":2,"numDeaths":5,"totalTime":70},{"damageGiven":271,"damageRecieved":279,"numKills":5,"numDeaths":2,"totalTime":84},{"damageGiven":271,"damageRecieved":298,"numKills":2,"numDeaths":4,"totalTime":79},{"damageGiven":296,"damageRecieved":272,"numKills":4,"numDeaths":1,"totalTime":100},{"damageGiven":320,"damageRecieved":307,"numKills":0,"numDeaths":4,"totalTime":89},{"damageGiven":283,"damageRecieved":317,"numKills":0,"numDeaths":5,"totalTime":80}]},"player3":{"name":"Player 3","weeks":[{"damageGiven":293,"damageRecieved":280,"numKills":4,"numDeaths":3,"totalTime":65},{"damageGiven":292,"damageRecieved":312,"numKills":6,"numDeaths":4,"totalTime":82},{"damageGiven":275,"damageRecieved":270,"numKills":2,"numDeaths":1,"totalTime":100},{"damageGiven":315,"damageRecieved":318,"numKills":0,"numDeaths":3,"totalTime":92},{"damageGiven":276,"damageRecieved":277,"numKills":1,"numDeaths":3,"totalTime":65},{"damageGiven":299,"damageRecieved":302,"numKills":1,"numDeaths":2,"totalTime":100}]},"player4":{"name":"Player 4","weeks":[{"damageGiven":296,"damageRecieved":287,"numKills":5,"numDeaths":3,"totalTime":109},{"damageGiven":287,"damageRecieved":294,"numKills":1,"numDeaths":0,"totalTime":81},{"damageGiven":305,"damageRecieved":307,"numKills":4,"numDeaths":5,"totalTime":80},{"damageGiven":305,"damageRecieved":285,"numKills":4,"numDeaths":2,"totalTime":106},{"damageGiven":273,"damageRecieved":276,"numKills":6,"numDeaths":1,"totalTime":119},{"damageGiven":290,"damageRecieved":280,"numKills":1,"numDeaths":6,"totalTime":114}]},"player5":{"name":"Player 5","weeks":[{"damageGiven":300,"damageRecieved":316,"numKills":2,"numDeaths":0,"totalTime":69},{"damageGiven":294,"damageRecieved":287,"numKills":5,"numDeaths":4,"totalTime":81},{"damageGiven":290,"damageRecieved":313,"numKills":5,"numDeaths":6,"totalTime":113},{"damageGiven":295,"damageRecieved":326,"numKills":2,"numDeaths":5,"totalTime":69},{"damageGiven":282,"damageRecieved":278,"numKills":2,"numDeaths":0,"totalTime":91},{"damageGiven":303,"damageRecieved":276,"numKills":1,"numDeaths":3,"totalTime":97}]},"player6":{"name":"Player 6","weeks":[{"damageGiven":282,"damageRecieved":321,"numKills":1,"numDeaths":4,"totalTime":79},{"damageGiven":287,"damageRecieved":329,"numKills":4,"numDeaths":3,"totalTime":106},{"damageGiven":316,"damageRecieved":304,"numKills":6,"numDeaths":6,"totalTime":93},{"damageGiven":323,"damageRecieved":317,"numKills":6,"numDeaths":2,"totalTime":93},{"damageGiven":291,"damageRecieved":276,"numKills":1,"numDeaths":5,"totalTime":113},{"damageGiven":295,"damageRecieved":302,"numKills":4,"numDeaths":0,"totalTime":93}]},"player7":{"name":"Player 7","weeks":[{"damageGiven":307,"damageRecieved":282,"numKills":3,"numDeaths":1,"totalTime":119},{"damageGiven":320,"damageRecieved":310,"numKills":4,"numDeaths":0,"totalTime":117},{"damageGiven":285,"damageRecieved":321,"numKills":2,"numDeaths":3,"totalTime":62},{"damageGiven":307,"damageRecieved":312,"numKills":0,"numDeaths":4,"totalTime":85},{"damageGiven":287,"damageRecieved":271,"numKills":2,"numDeaths":3,"totalTime":102},{"damageGiven":277,"damageRecieved":312,"numKills":0,"numDeaths":1,"totalTime":74}]},"player8":{"name":"Player 8","weeks":[{"damageGiven":293,"damageRecieved":318,"numKills":5,"numDeaths":1,"totalTime":113},{"damageGiven":278,"damageRecieved":303,"numKills":6,"numDeaths":3,"totalTime":76},{"damageGiven":281,"damageRecieved":328,"numKills":3,"numDeaths":6,"totalTime":89},{"damageGiven":299,"damageRecieved":322,"numKills":1,"numDeaths":3,"totalTime":75},{"damageGiven":321,"damageRecieved":311,"numKills":2,"numDeaths":2,"totalTime":95},{"damageGiven":310,"damageRecieved":327,"numKills":0,"numDeaths":3,"totalTime":74}]},"player9":{"name":"Player 9","weeks":[{"damageGiven":327,"damageRecieved":296,"numKills":6,"numDeaths":6,"totalTime":77},{"damageGiven":295,"damageRecieved":309,"numKills":5,"numDeaths":6,"totalTime":86},{"damageGiven":329,"damageRecieved":306,"numKills":6,"numDeaths":4,"totalTime":96},{"damageGiven":303,"damageRecieved":297,"numKills":1,"numDeaths":6,"totalTime":71},{"damageGiven":287,"damageRecieved":302,"numKills":4,"numDeaths":5,"totalTime":94},{"damageGiven":292,"damageRecieved":280,"numKills":6,"numDeaths":3,"totalTime":76}]},"player10":{"name":"Player 10","weeks":[{"damageGiven":292,"damageRecieved":326,"numKills":5,"numDeaths":4,"totalTime":72},{"damageGiven":327,"damageRecieved":308,"numKills":5,"numDeaths":2,"totalTime":63},{"damageGiven":312,"damageRecieved":275,"numKills":2,"numDeaths":3,"totalTime":120},{"damageGiven":308,"damageRecieved":329,"numKills":4,"numDeaths":5,"totalTime":91},{"damageGiven":285,"damageRecieved":277,"numKills":4,"numDeaths":6,"totalTime":72},{"damageGiven":310,"damageRecieved":289,"numKills":2,"numDeaths":6,"totalTime":108}]},"player11":{"name":"Player 11","weeks":[{"damageGiven":282,"damageRecieved":315,"numKills":4,"numDeaths":6,"totalTime":103},{"damageGiven":295,"damageRecieved":330,"numKills":4,"numDeaths":5,"totalTime":116},{"damageGiven":307,"damageRecieved":297,"numKills":3,"numDeaths":0,"totalTime":97},{"damageGiven":278,"damageRecieved":294,"numKills":5,"numDeaths":0,"totalTime":76},{"damageGiven":318,"damageRecieved":318,"numKills":4,"numDeaths":2,"totalTime":71},{"damageGiven":320,"damageRecieved":315,"numKills":1,"numDeaths":1,"totalTime":73}]},"player12":{"name":"Player 12","weeks":[{"damageGiven":275,"damageRecieved":312,"numKills":0,"numDeaths":0,"totalTime":84},{"damageGiven":285,"damageRecieved":270,"numKills":5,"numDeaths":0,"totalTime":98},{"damageGiven":315,"damageRecieved":275,"numKills":3,"numDeaths":5,"totalTime":103},{"damageGiven":315,"damageRecieved":321,"numKills":2,"numDeaths":3,"totalTime":81},{"damageGiven":299,"damageRecieved":283,"numKills":4,"numDeaths":6,"totalTime":114},{"damageGiven":296,"damageRecieved":281,"numKills":1,"numDeaths":2,"totalTime":82}]},"player13":{"name":"Player 13","weeks":[{"damageGiven":295,"damageRecieved":286,"numKills":1,"numDeaths":3,"totalTime":69},{"damageGiven":316,"damageRecieved":317,"numKills":5,"numDeaths":2,"totalTime":110},{"damageGiven":314,"damageRecieved":327,"numKills":5,"numDeaths":1,"totalTime":65},{"damageGiven":296,"damageRecieved":319,"numKills":5,"numDeaths":3,"totalTime":86},{"damageGiven":297,"damageRecieved":285,"numKills":3,"numDeaths":3,"totalTime":83},{"damageGiven":305,"damageRecieved":279,"numKills":3,"numDeaths":0,"totalTime":113}]},"player14":{"name":"Player 14","weeks":[{"damageGiven":302,"damageRecieved":288,"numKills":3,"numDeaths":1,"totalTime":93},{"damageGiven":320,"damageRecieved":317,"numKills":3,"numDeaths":2,"totalTime":109},{"damageGiven":312,"damageRecieved":271,"numKills":4,"numDeaths":0,"totalTime":90},{"damageGiven":280,"damageRecieved":292,"numKills":1,"numDeaths":3,"totalTime":112},{"damageGiven":292,"damageRecieved":283,"numKills":4,"numDeaths":1,"totalTime":81},{"damageGiven":289,"damageRecieved":277,"numKills":3,"numDeaths":4,"totalTime":104}]},"player15":{"name":"Player 15","weeks":[{"damageGiven":287,"damageRecieved":281,"numKills":0,"numDeaths":0,"totalTime":83},{"damageGiven":300,"damageRecieved":302,"numKills":1,"numDeaths":4,"totalTime":112},{"damageGiven":312,"damageRecieved":286,"numKills":1,"numDeaths":6,"totalTime":110},{"damageGiven":279,"damageRecieved":309,"numKills":3,"numDeaths":0,"totalTime":84},{"damageGiven":323,"damageRecieved":327,"numKills":5,"numDeaths":2,"totalTime":120},{"damageGiven":321,"damageRecieved":311,"numKills":0,"numDeaths":4,"totalTime":91}]},"player16":{"name":"Player 16","weeks":[{"damageGiven":290,"damageRecieved":294,"numKills":6,"numDeaths":2,"totalTime":97},{"damageGiven":300,"damageRecieved":273,"numKills":6,"numDeaths":5,"totalTime":82},{"damageGiven":293,"damageRecieved":318,"numKills":1,"numDeaths":1,"totalTime":86},{"damageGiven":297,"damageRecieved":291,"numKills":0,"numDeaths":3,"totalTime":75},{"damageGiven":282,"damageRecieved":272,"numKills":5,"numDeaths":0,"totalTime":89},{"damageGiven":301,"damageRecieved":301,"numKills":6,"numDeaths":6,"totalTime":112}]},"player17":{"name":"Player 17","weeks":[{"damageGiven":322,"damageRecieved":299,"numKills":3,"numDeaths":1,"totalTime":107},{"damageGiven":307,"damageRecieved":305,"numKills":2,"numDeaths":3,"totalTime":88},{"damageGiven":275,"damageRecieved":270,"numKills":1,"numDeaths":2,"totalTime":77},{"damageGiven":314,"damageRecieved":290,"numKills":4,"numDeaths":0,"totalTime":80},{"damageGiven":272,"damageRecieved":311,"numKills":6,"numDeaths":0,"totalTime":87},{"damageGiven":294,"damageRecieved":321,"numKills":4,"numDeaths":2,"totalTime":63}]},"player18":{"name":"Player 18","weeks":[{"damageGiven":329,"damageRecieved":287,"numKills":5,"numDeaths":5,"totalTime":88},{"damageGiven":291,"damageRecieved":280,"numKills":2,"numDeaths":0,"totalTime":98},{"damageGiven":273,"damageRecieved":271,"numKills":5,"numDeaths":2,"totalTime":108},{"damageGiven":285,"damageRecieved":286,"numKills":5,"numDeaths":6,"totalTime":93},{"damageGiven":316,"damageRecieved":283,"numKills":5,"numDeaths":5,"totalTime":91},{"damageGiven":327,"damageRecieved":296,"numKills":3,"numDeaths":0,"totalTime":87}]},"player19":{"name":"Player 19","weeks":[{"damageGiven":283,"damageRecieved":304,"numKills":3,"numDeaths":4,"totalTime":68},{"damageGiven":316,"damageRecieved":288,"numKills":2,"numDeaths":4,"totalTime":84},{"damageGiven":320,"damageRecieved":314,"numKills":0,"numDeaths":2,"totalTime":76},{"damageGiven":281,"damageRecieved":296,"numKills":0,"numDeaths":6,"totalTime":119},{"damageGiven":300,"damageRecieved":329,"numKills":5,"numDeaths":1,"totalTime":94},{"damageGiven":318,"damageRecieved":304,"numKills":3,"numDeaths":3,"totalTime":99}]}}
 }

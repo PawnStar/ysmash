@@ -1,36 +1,68 @@
 
 var chartColors = [
-  'rgb(255, 226, 224)',//red
-  'rgb(255, 159, 64)',//orange
-  'rgb(255, 205, 86)',//yellow
-  'rgb(75, 192, 192)',//green
-  'rgb(68, 211, 255)',//blue
-  'rgb(153, 102, 255)',//purple
-  'rgb(231,233,237)'//grey
+  '#D50000',
+  '#C51162',
+  '#AA00FF',
+  '#6200EA',
+  '#304FFE',
+  '#2962FF',
+  '#0091EA',
+  '#00B8D4',
+  '#00BFA5',
+  '#00C853',
+  '#64DD17',
+  '#AEEA00',
+  '#FFD600',
+  '#FFAB00',
+  '#FF6D00',
+  '#DD2C00'
 ];
 
 var chartContents;
 
 //New stuff
 $(document).ready(function(){
-
-  resetGraph('Select a Season');
-
-
-
-
-
+  resetGraph('Initializing . . . ')
   $('#season').change(function(){
-    prepSeason($(this).val());
-    redrawGraph();
+    prepSeason();
   })
 
-
+  prepSeason();
 })
+
+var statClick = function(ev){
+  ev.preventDefault();
+
+  if($(this).hasClass('selected'))
+    prepStat($(this).attr('data-stat'), true);
+  else {    
+    var players = $('.playerLink.selected').map(function(){return $(this).attr('data-player')});
+    $('.statLink.selected').removeClass('selected');
+    $(this).addClass('selected');
+    prepStat($(this).attr('data-stat'), false);
+    $('.playerLink.selected').removeClass('selected');
+    players.each(function(i, player){
+      $('[data-player=\''+player+'\']').addClass('selected');
+    })
+  }
+
+  redrawGraph();
+
+  return false;
+}
+
+var playerClick = function(ev){
+  ev.preventDefault();
+
+  $(this).toggleClass('selected');
+  redrawGraph();
+
+  return false;
+}
 
 var resetGraph = function(title){
   chartContents = {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: [],
       datasets: []
@@ -49,13 +81,13 @@ var resetGraph = function(title){
       }
     }
   };
-  $('#canvasContainer').html('').html('<canvas id="canvas"></canvas>');
+  $('#chart').html('').html('<canvas id="canvas"></canvas>');
   var ctx = document.getElementById("canvas").getContext("2d");
   window.ySmashChart = new Chart(ctx, chartContents);
 }
 
-var prepSeason = function(prep){
-  var season = stats[prep];
+var prepSeason = function(){
+  var season = stats[$('#season').val()];
 
   var hasStats = false;
   $('#stats').empty();
@@ -71,25 +103,58 @@ var prepSeason = function(prep){
     hasStats = true;
     $('#stats').append('<li><a class="statLink" data-stat="' + stat + '" href="#"">' + name + '</a></li>');
   }
-  if(!hasStats) $('#stats').append('<li>Couldn\'t load stats</li>')
+  if(!hasStats) $('#stats').append('<li>Couldn\'t load stats</li>');
 
+  $('#players').html('<li>Select a stat</li>')
+
+  $('.statLink').click(statClick);
+  $('.statLink').first().addClass('selected');
+  prepStat($('.statLink').first().attr('data-stat'), true);
+}
+
+var prepStat = function(stat, preselect){
+  var season = stats[$('#season').val()];
 
   var hasPlayers = false;
   $('#players').empty();
-  for(player in season.players){
-    if(!season.players.hasOwnProperty(player))
-      continue;
+  var players = Object.keys(season.players)
+    .map(function(playerName){
+      var player = season.players[playerName];
+      player.id = playerName;
+      return player;
+    })
+    .map(function(player){
+      if(typeof season.stats[stat] == 'function')
+        season.stats[stat](player.weeks)
+      return player;
+    }).sort(function(a,b){
+      if(season.invert.includes(stat))
+        return a.weeks[season.weeks-1][stat] - b.weeks[season.weeks-1][stat];
+      else
+        return b.weeks[season.weeks-1][stat] - a.weeks[season.weeks-1][stat];
+    });
+  for(i in players){
+    var player = players[i];
     hasPlayers = true;
-    console.log(player)
+
+    $('#players').append('<li><a class="playerLink" data-player="' + player.id + '" href="#"">' + player.name + '<span>' + player.weeks[season.weeks-1][stat].toFixed(2) + '</span></a></li>');
   }
   if(!hasPlayers) $('#players').append('<li>Couldn\'t load players</li>')
+
+  $('.playerLink').click(playerClick);
+
+  //Preselect first three
+  if(preselect){
+    $('.playerLink').slice(0,3).addClass('selected');
+  }
+  redrawGraph();
 }
 
 var redrawGraph = function(){
   var season = stats[$('#season').val()];
 
-  var stat = 'dg-dr';
-  var players = ['anonano', 'pawnstar', 'splice'];
+  var stat = $('.statLink.selected').attr('data-stat');
+  var players = $('.playerLink.selected').map(function(){return $(this).attr('data-player')});
   var data = [];
   var labels = [];
 
@@ -118,6 +183,8 @@ var redrawGraph = function(){
     var dataset = {
       label: season.players[player].name,
       backgroundColor: chartColors[i],
+      borderColor: chartColors[i],
+      fill:false,
       data: season.players[player].weeks.map(function(week){return week[stat]})
     };
 
@@ -126,13 +193,13 @@ var redrawGraph = function(){
   }
 
   //Update chart tile
-  chartContents.options.title.text = name;
+  chartContents.options.title.text = name + ((players.length)?'':' (no players selected)');
   //Update chart data
   chartContents.data.datasets = data;
   chartContents.data.labels = labels;
   //Redraw
   window.ySmashChart.destroy();
-  $('#canvasContainer').html('').html('<canvas id="canvas"></canvas>');
+  $('#chart').html('').html('<canvas id="canvas"></canvas>');
   var ctx = document.getElementById("canvas").getContext("2d");
   window.ySmashChart = new Chart(ctx, chartContents);
 }

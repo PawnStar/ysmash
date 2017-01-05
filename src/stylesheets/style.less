@@ -7,26 +7,36 @@ canvas {
 }
 
 html{
-  background:black;
+  background:#212121;
   color:white;
 }
 
 body{
-  max-width:1000px;
-  margin:0 auto;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
   padding:20px;
   background:#212121;
-  position:relative;
 }
 
 #chart{
-  margin-left:210px;
+  margin:0;
+  position:absolute;
+  top:80px;
+  right:0;
+  left:200px;
+  bottom:0;
+}
+
+#chart canvas{
 }
 
 #sidebar{
   position:absolute;
-  left:20px;
-  width:180px;
+  left:0px;
+  width:200px;
   ul{
     padding-left:0;
     li{
@@ -34,9 +44,38 @@ body{
       margin-left:0;
     }
   }
+  a{
+    color:white;
+    text-decoration:none;
+    position:relative;
+    margin-left:10px;
+    span{
+      float:right;
+      margin-right:10px;
+    }
+  }
+  a:before{
+    content:'';
+    position:absolute;
+    left:-10px;
+    top:2px;
+  }
+  a.selected:before{
+    content:'*';
+  }
 }
 #sidebar:after{
   clear:both;
   content:'';
   display:block;
+}
+
+#seasonSelector{
+  position: absolute;
+  top: 40px;
+  right: 50px;
+}
+
+#header h1 {
+  margin: 0;
 }
