@@ -21,7 +21,7 @@ module.exports = function(grunt){
       dist: {
         files: {
           'docs/ysmash.min.js': ['src/javascript/jquery-3.1.1.min.js', 'src/javascript/Chart.bundle.js', 'src/javascript/rechart.js'],
-          'docs/stats.js': ['src/stats/template.js', 'src/stats/w2016.js', 'src/stats/f2016.js']
+          'docs/stats.js': ['src/stats/template.js', 'src/stats/f2016.js', 'src/stats/w2016.js', 'src/stats/f2015.js', 'src/stats/w2015.js']
         }
       }
     },
