@@ -158,7 +158,8 @@ var redrawGraph = function(){
     colorStep = 0;
 
   //Get each player
-  for(var i = 0, player; player = (i < players.length)?players[i]:false; i++){
+
+  for(var i = 0, playersDisplayed = 0, player; player = (i < players.length)?players[i]:false; i++){
     if(selectedPlayers.indexOf(player.name) == -1)
       continue;
 
@@ -166,8 +167,8 @@ var redrawGraph = function(){
     var dataset = {
       label: player.name,
       //Use fancy dynamic color stepping
-      borderColor: 'hsl('+parseInt(120 - colorStep*i)+', 100%, 50%)',
-      backgroundColor: 'hsl('+parseInt(120 - colorStep*i)+', 100%, 50%)',
+      borderColor: 'hsl('+parseInt(120 - colorStep*playersDisplayed)+', 100%, 50%)',
+      backgroundColor: 'hsl('+parseInt(120 - colorStep*playersDisplayed)+', 100%, 50%)',
       fill:false,
       //Map to take care of max damage
       data: player.weeks.map(function(current){if(current && current.max) return current.max; return current;})
@@ -175,6 +176,7 @@ var redrawGraph = function(){
 
     //Add it
     data.push(dataset);
+    playersDisplayed++;
   }
 
   //Update chart tile
