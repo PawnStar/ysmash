@@ -167,6 +167,7 @@ var redrawGraph = function(){
       label: player.name,
       //Use fancy dynamic color stepping
       borderColor: 'hsl('+parseInt(120 - colorStep*i)+', 100%, 50%)',
+      backgroundColor: 'hsl('+parseInt(120 - colorStep*i)+', 100%, 50%)',
       fill:false,
       //Map to take care of max damage
       data: player.weeks.map(function(current){if(current && current.max) return current.max; return current;})
