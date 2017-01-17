@@ -31,6 +31,9 @@ var setupSeasons = function(seasons){
 var statClick = function(ev){
   ev.preventDefault();
 
+  if($(this).hasClass('selected'))
+    return false;
+
   $('.statLink.selected').removeClass('selected');
   $(this).addClass('selected');
   prepStat($(this).attr('data-stat'), true);
@@ -160,7 +163,7 @@ var redrawGraph = function(){
       backgroundColor: 'hsl('+parseInt(120 - colorStep*playersDisplayed)+', 100%, 50%)',
       fill:false,
       //Map to take care of max damage
-      data: player.weeks.map(function(current){if(current && current.max) return current.max; return current;})
+      data: player.weeks.map(function(current){if(current && current.max) return current.max.toFixed(4); if(current) return current.toFixed(4); return current;})
     };
 
     //Add it

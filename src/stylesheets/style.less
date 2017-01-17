@@ -1,14 +1,9 @@
-
-canvas {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    background:white;
-}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Slabo+27px');
 
 html{
   background:#212121;
   color:white;
+  font-family: 'Slabo 27px', sans-serif;
 }
 
 body{
@@ -19,18 +14,28 @@ body{
   bottom:0;
   padding:20px;
   background:#212121;
+  overflow:hidden;
+}
+
+#header{
+  position: relative;
+  top: -10px;
+  left: -10px;
 }
 
 #chart{
   margin:0;
   position:absolute;
   top:80px;
-  right:0;
-  left:200px;
+  right:10px;
+  left:210px;
   bottom:0;
 }
 
 #chart canvas{
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   background:#333;
 }
 
@@ -42,10 +47,11 @@ body{
     padding-left:0;
     li{
       list-style:none;
-      margin-left:0;
+      margin-left:5px;
     }
   }
   a{
+    display:block;
     color:white;
     text-decoration:none;
     position:relative;
@@ -55,14 +61,23 @@ body{
       margin-right:10px;
     }
   }
+  a.selected {
+    color: #a9ffb8;
+  }
+  a:hover {
+    color: #5bb16a;
+  }
   a:before{
     content:'';
     position:absolute;
-    left:-10px;
-    top:2px;
+    left:-15px;
+    top:-2px;
+  }
+  a:hover:before{
+    content:'\25C7';
   }
   a.selected:before{
-    content:'*';
+    content:'\25C8';
   }
 }
 #sidebar:after{
@@ -73,10 +88,12 @@ body{
 
 #seasonSelector{
   position: absolute;
-  top: 40px;
-  right: 50px;
+  top: 20px;
+  right: -10px;
 }
 
-#header h1 {
+h1 {
   margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
 }
