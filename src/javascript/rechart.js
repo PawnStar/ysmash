@@ -1,22 +1,17 @@
 var stats;
 
 var chartColors = [
-  '#D50000',
-  '#C51162',
-  '#AA00FF',
-  '#6200EA',
-  '#304FFE',
-  '#2962FF',
-  '#0091EA',
-  '#00B8D4',
-  '#00BFA5',
-  '#00C853',
-  '#64DD17',
-  '#AEEA00',
-  '#FFD600',
-  '#FFAB00',
-  '#FF6D00',
-  '#DD2C00'
+  'hsl(120, 100%, 50%)',
+  'hsl(108, 100%, 50%)',
+  'hsl(96, 100%, 50%)',
+  'hsl(84, 100%, 50%)',
+  'hsl(72, 100%, 50%)',
+  'hsl(60, 100%, 50%)',
+  'hsl(48, 100%, 50%)',
+  'hsl(36, 100%, 50%)',
+  'hsl(24, 100%, 50%)',
+  'hsl(12, 100%, 50%)',
+  'hsl(0, 100%, 50%)',
 ];
 
 var chartContents;
@@ -154,6 +149,14 @@ var redrawGraph = function(){
     labels.push('Week ' + i);
 
   var players = season.data[stat].data;
+
+  //Fancy dynamic color stepping
+  var colorStep;
+  if(selectedPlayers.length)
+    colorStep = 120 / (selectedPlayers.length-1);
+  else
+    colorStep = 0;
+
   //Get each player
   for(var i = 0, player; player = (i < players.length)?players[i]:false; i++){
     if(selectedPlayers.indexOf(player.name) == -1)
@@ -162,8 +165,8 @@ var redrawGraph = function(){
     //Build their dataset
     var dataset = {
       label: player.name,
-      backgroundColor: chartColors[i],
-      borderColor: chartColors[i],
+      //Use fancy dynamic color stepping
+      borderColor: 'hsl('+parseInt(120 - colorStep*i)+', 100%, 50%)',
       fill:false,
       //Map to take care of max damage
       data: player.weeks.map(function(current){if(current && current.max) return current.max; return current;})
