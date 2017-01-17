@@ -66,6 +66,7 @@ var resetGraph = function(title){
         text: title,
       },
       tooltips: {
+        mode:'index',
         display:true
       },
       legend:{
