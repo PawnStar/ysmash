@@ -194,8 +194,9 @@ for(stat in stats){
   }
 }
 
-//console.log('\nWriting to file . . .');
-fs.writeFile(path.join(__dirname,args['out']), JSON.stringify({
+console.log('\nWriting to file . . . ' + path.join(__dirname, 'seasons[]', args['out']));
+fs.writeFile(path.join(__dirname, 'seasons[]', args['out']), JSON.stringify({
   name: args['name'],
+  weeks: numWeeks,
   data: stats
 }, null, 2), 'utf8')

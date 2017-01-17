@@ -20,8 +20,14 @@ module.exports = function(grunt){
       },
       dist: {
         files: {
-          'docs/ysmash.min.js': ['src/javascript/jquery-3.1.1.min.js', 'src/javascript/Chart.bundle.js', 'src/javascript/rechart.js'],
-          'docs/stats.js': ['src/stats/template.js', 'src/stats/f2016.js', 'src/stats/w2016.js', 'src/stats/f2015.js', 'src/stats/w2015.js']
+          'docs/ysmash.min.js': ['src/javascript/jquery-3.1.1.min.js', 'src/javascript/Chart.bundle.js', 'src/javascript/rechart.js']
+        }
+      }
+    },
+    'concat-json':{
+      'stats':{
+        files:{
+          "docs/stats.json": [ "seasons[]/*.json" ]
         }
       }
     },
@@ -52,8 +58,22 @@ module.exports = function(grunt){
       }
     },
     watch: {
-      files: ['src/javascript/*.js', 'src/stylesheets/*.less', 'src/*.pug'],
-      tasks: ['build']
+      js:{
+        files: ['src/javascript/*.js'],
+        tasks: ['build-js']
+      },
+      html:{
+        files: ['src/*.pug'],
+        tasks: ['build-html']
+      },
+      json:{
+        files: ['seasons[]/*.json,'],
+        tasks: ['build-json']
+      },
+      css:{
+        files: ['src/stylesheets/*.less'],
+        tasks: ['build-css']
+      }
     }
   });
 
@@ -62,7 +82,12 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-pug');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-concat-json');
 
-  grunt.registerTask('build', ['uglify','pug','less']);
+  grunt.registerTask('build', ['uglify','concat-json','pug','less']);
+  grunt.registerTask('build-js', ['uglify']);
+  grunt.registerTask('build-json', ['concat-json']);
+  grunt.registerTask('build-html', ['pug']);
+  grunt.registerTask('build-css', ['less']);
   grunt.registerTask('default',['build','connect:server','watch']);
 };
