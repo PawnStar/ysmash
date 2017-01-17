@@ -1,18 +1,6 @@
 var stats;
 
-var chartColors = [
-  'hsl(120, 100%, 50%)',
-  'hsl(108, 100%, 50%)',
-  'hsl(96, 100%, 50%)',
-  'hsl(84, 100%, 50%)',
-  'hsl(72, 100%, 50%)',
-  'hsl(60, 100%, 50%)',
-  'hsl(48, 100%, 50%)',
-  'hsl(36, 100%, 50%)',
-  'hsl(24, 100%, 50%)',
-  'hsl(12, 100%, 50%)',
-  'hsl(0, 100%, 50%)',
-];
+
 
 var chartContents;
 
@@ -69,9 +57,10 @@ var resetGraph = function(title){
     },
     options: {
       responsive: true,
+      scaleFontColor:'white',
       title: {
         display: true,
-        text: title
+        text: title,
       },
       tooltips: {
         display:true
