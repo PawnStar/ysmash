@@ -183,12 +183,25 @@ for(stat in stats){
     return p;
   }).sort(config.sort);
 
+  //Do averages
+  var total = ranks.map(function(player){
+    if(player.current.max)
+      return player.current.max;
+    return player.current;
+  }).reduce(function(cont, current){
+    return cont + current;
+  })
+  console.log("Total for " + stat + ": " + total);
+  var average = total/ranks.length;
+  console.log("  Average: " + average);
+
   if(config.trim > 0)
     ranks = ranks.slice(0, config.trim);
 
   //Store again
   stats[stat] = {
     name: stat,
+    average: average,
     graph: config.graph,
     data: ranks
   }

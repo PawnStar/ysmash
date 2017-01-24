@@ -151,7 +151,6 @@ var redrawGraph = function(){
     colorStep = 0;
 
   //Get each player
-
   for(var i = 0, playersDisplayed = 0, player; player = (i < players.length)?players[i]:false; i++){
     if(selectedPlayers.indexOf(player.name) == -1)
       continue;
@@ -171,6 +170,21 @@ var redrawGraph = function(){
     data.push(dataset);
     playersDisplayed++;
   }
+
+  //Add average
+  var avgSet = {
+    label: 'Average ' + name,
+    borderColor: 'lightgray',
+    backgroundColor: 'lightgray',
+    fill: false,
+    data: (new Array(season.weeks)).fill(season.data[stat].average)
+  }
+
+  console.log(season.data[stat].average);
+  console.log(avgSet.data);
+
+  if(season.data[stat].average)
+    data.push(avgSet);
 
   //Update chart tile
   chartContents.options.title.text = name + ((selectedPlayers.length)?'':' (no players selected)');

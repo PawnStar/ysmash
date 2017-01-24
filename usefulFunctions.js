@@ -88,4 +88,8 @@ stuff.countMatches = function(weeks){
   return count;
 }
 
+stuff.doAverage = function(statName, avgPlayerName, data){
+
+}
+
 module.exports = stuff;
