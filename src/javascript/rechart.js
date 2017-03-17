@@ -110,6 +110,7 @@ var prepStat = function(stat, preselect){
   for(i in players){
     var player = players[i];
     hasPlayers = true;
+    if(!player.current) player.current = 0;
     if(player.current.max)
       player.current = player.current.max;
 

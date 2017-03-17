@@ -18,6 +18,13 @@ stuff.doTime = function(weeks){
   })
 };
 
+stuff.doKDShiftingAllainces = function(weeks, kills, deaths, selfDestructs, result){
+  stuff.iterateMatches(weeks, function(current){
+    if(current.hasOwnProperty(kills) && current.hasOwnProperty(deaths) && current.hasOwnProperty(selfDestructs))
+      current[result] = (current[kills] - current[selfDestructs]/2) / current[deaths];
+  })
+}
+
 stuff.totalSomething = function(weeks, statName, totalName){
   stuff.iterateMatches(weeks,function(current,prev){
     var total = null;
@@ -62,6 +69,13 @@ stuff.divideSomething = function(weeks, numerator, denominator, resultName){
       current[resultName] = current[numerator] / current[denominator];
   })
 };
+
+stuff.combineWinLoss = function(weeks, wins, losses, resultName){
+  stuff.iterateMatches(weeks, function(current){
+    if(current.hasOwnProperty(wins) && current.hasOwnProperty(losses))
+      current[resultName]
+  })
+}
 
 stuff.multiplySomething = function(weeks, first, second, resultName){
   stuff.iterateMatches(weeks, function(current){

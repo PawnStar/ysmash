@@ -22,7 +22,7 @@ if(!args['name']){
   console.log("You haven't provided a name for this season.");
 }
 if(error){
-  console.log("USAGE: node parsedir.js []--verbose] --name=[Season] --in [inputFile] --out [outputFile] --columns [numColumns]");
+  console.log("USAGE: node parsedir.js [--verbose] --name=[Season] --in [inputFile] --out [outputFile] --columns [numColumns]");
   process.exit(1)
 }
 
@@ -104,17 +104,18 @@ var funcs = require('./usefulFunctions.js');
 var compute = function(weeks){
   //Total score, damages, kills, deaths, time
   funcs.doTime(weeks);
-  funcs.totalSomething(weeks, 'Pts', 'Score');
+  funcs.totalSomething(weeks, 'W', 'Wins');
+  funcs.totalSomething(weeks, 'L', 'Losses');
   funcs.totalSomething(weeks, 'K', 'Kills');
   funcs.totalSomething(weeks, 'D', 'Deaths');
-  funcs.totalSomething(weeks, 'SD', 'Self Destructs');
+  funcs.totalSomething(weeks, 'TK', 'Self Destructs');
   funcs.totalSomething(weeks, 'DmgG', 'Damage Given');
   funcs.totalSomething(weeks, 'DmgR', 'Damage Recieved');
   funcs.totalSomething(weeks, 'Time', 'Total Time');
   funcs.totalSomething(weeks, 'Hit%', 'Hit%Sum');
 
   //Compute K/D, DG/DR, DG/K, DR/D, Lfspn, Klspn, DPS, DRPS
-  funcs.divideSomething(weeks, 'Kills', 'Deaths', 'K/D');
+  funcs.doKDShiftingAllainces(weeks, 'Kills', 'Deaths', 'Self Destructs', 'K/D');
   funcs.divideSomething(weeks, 'Damage Given', 'Damage Recieved', 'DG/DR');
   funcs.divideSomething(weeks, 'Damage Given', 'Kills', 'DG/K');
   funcs.divideSomething(weeks, 'Damage Recieved', 'Deaths', 'DR/D');
@@ -135,6 +136,8 @@ var compute = function(weeks){
   //Clean up
   funcs.trimSomething(weeks, 'Rnk');
   funcs.trimSomething(weeks, 'Pts');
+  funcs.trimSomething(weeks, 'W');
+  funcs.trimSomething(weeks, 'L');
   funcs.trimSomething(weeks, 'K');
   funcs.trimSomething(weeks, 'D');
   funcs.trimSomething(weeks, 'SD');
@@ -185,6 +188,8 @@ for(stat in stats){
 
   //Do averages
   var total = ranks.map(function(player){
+    //Possibly null
+    if(!player.current) return 0;
     if(player.current.max)
       return player.current.max;
     return player.current;
@@ -201,7 +206,7 @@ for(stat in stats){
   //Store again
   stats[stat] = {
     name: stat,
-    average: average,
+    average: null,
     graph: config.graph,
     data: ranks
   }

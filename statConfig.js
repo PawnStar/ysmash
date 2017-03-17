@@ -1,6 +1,6 @@
 var stats = {
   'Points': {
-    'stat':'Score',
+    'stat':'Wins',
     'trim': 0,
     'graph': false,
     'sort':function(first,second){
