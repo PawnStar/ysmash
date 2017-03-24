@@ -6,7 +6,7 @@ var chartContents;
 
 //New stuff
 $(document).ready(function(){
-  resetGraph('Initializing . . . ')
+  resetGraph('Select a stat . . . ')
   $.ajax({
     dataType: "json",
     url: './stats.json',
@@ -34,10 +34,12 @@ var statClick = function(ev){
   if($(this).hasClass('selected'))
     return false;
 
-  $('.statLink.selected').removeClass('selected');
-  $(this).addClass('selected');
+  if($(this).attr('data-stat') !== 'Points'){
+    $('.statLink.selected').removeClass('selected');
+    $(this).addClass('selected');
+  }
+
   prepStat($(this).attr('data-stat'), true);
-  redrawGraph();
 
   return false;
 }
@@ -84,6 +86,10 @@ var prepSeason = function(){
 
   var hasStats = false;
   $('#stats').empty();
+
+  if(season.data['Points'])
+    $('#stats').append('<li><a class="statLink" data-stat="Points" href="#">Rankings</a></li>');
+
   for(stat in season.data){
     if(!season.data.hasOwnProperty(stat) || season.data[stat] == null || !season.data[stat].graph)
       continue;
@@ -97,15 +103,15 @@ var prepSeason = function(){
   $('#players').html('<li>Select a stat</li>')
 
   $('.statLink').click(statClick);
-  $('.statLink').first().addClass('selected');
-  prepStat($('.statLink').first().attr('data-stat'), true);
+  $('.statLink').eq(1).click();
 }
 
-var prepStat = function(stat, preselect){
-  var stat = stats.seasons[$('#season').val()].data[stat];
+var prepStat = function(value, preselect){
+  var stat = stats.seasons[$('#season').val()].data[value];
 
   var hasPlayers = false;
-  $('#players').empty();
+  var html = '';
+
   var players = stat.data
   for(i in players){
     var player = players[i];
@@ -114,17 +120,32 @@ var prepStat = function(stat, preselect){
     if(player.current.max)
       player.current = player.current.max;
 
-    $('#players').append('<li><a class="playerLink" data-player="' + player.name + '" href="#"">' + player.name + '<span>' + player.current.toFixed(2) + '</span></a></li>');
+    html += '<li><a class="playerLink" data-player="' + player.name + '" href="#"">' + player.name + '<span>' + player.current.toFixed(2) + '</span></a></li>';
   }
-  if(!hasPlayers) $('#players').append('<li>Couldn\'t load players</li>')
 
-  $('.playerLink').click(playerClick);
+  if(!hasPlayers)
+    html = '<li>Couldn\'t load players</li>';
 
-  //Preselect first three
-  if(preselect){
-    $('.playerLink').slice(0,3).addClass('selected');
+  if(value === 'Points'){
+    $('body').addClass('noscroll')
+      .append('')
+      .append('<div class="overlay"><a class="overlay" id="closeOverlay" href="#"></a><div id="rankings"><h2>Season Rankings</h2><ol>' + html + '</ol></div></div>');
+
+    $('#closeOverlay').click(function(ev){
+      if(ev) ev.preventDefault();
+      $('body').removeClass('noscroll');
+      $('.overlay').remove();
+      return false;
+    })
+  }else{
+    $('#players').html(html);
+    $('.playerLink').click(playerClick);
+
+    //Preselect first three
+    if(preselect)
+      $('.playerLink').slice(0,3).addClass('selected');
+    redrawGraph();
   }
-  redrawGraph();
 }
 
 var redrawGraph = function(){
