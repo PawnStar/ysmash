@@ -84,6 +84,13 @@ stuff.multiplySomething = function(weeks, first, second, resultName){
   })
 };
 
+stuff.subtractSomething = function(weeks, first, second, resultName){
+  stuff.iterateMatches(weeks, function(current){
+    if(current.hasOwnProperty(first) && current.hasOwnProperty(second))
+      current[resultName] = current[first] - current[second];
+  })
+}
+
 stuff.trimSomething = function(weeks, stat){
   stuff.iterateMatches(weeks, function(current){
     if(current.hasOwnProperty(stat))

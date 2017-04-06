@@ -114,13 +114,16 @@ var compute = function(weeks){
   funcs.totalSomething(weeks, 'Time', 'Total Time');
   funcs.totalSomething(weeks, 'Hit%', 'Hit%Sum');
 
+  //Get kills - self destructs
+  funcs.subtractSomething(weeks, 'Kills', 'Self Destructs', 'ModKills');
+
   //Compute K/D, DG/DR, DG/K, DR/D, Lfspn, Klspn, DPS, DRPS
   funcs.doKDShiftingAllainces(weeks, 'Kills', 'Deaths', 'Self Destructs', 'K/D');
   funcs.divideSomething(weeks, 'Damage Given', 'Damage Recieved', 'DG/DR');
   funcs.divideSomething(weeks, 'Damage Given', 'Kills', 'DG/K');
   funcs.divideSomething(weeks, 'Damage Recieved', 'Deaths', 'DR/D');
   funcs.divideSomething(weeks, 'Total Time', 'Deaths', 'Lfspn');
-  funcs.divideSomething(weeks, 'Total Time', 'Kills', 'Klspn');
+  funcs.divideSomething(weeks, 'Total Time', 'ModKills', 'Klspn');
   funcs.divideSomething(weeks, 'Damage Given', 'Total Time', 'DPS');
   funcs.divideSomething(weeks, 'Damage Recieved', 'Total Time', 'DRPS');
 
@@ -147,6 +150,7 @@ var compute = function(weeks){
   funcs.trimSomething(weeks, 'DmgR');
   funcs.trimSomething(weeks, 'PkD');
   funcs.trimSomething(weeks, 'Time');
+  funcs.trimSomething(weeks, 'ModKills');
 }
 
 console.log("Computing stats.");
