@@ -66,7 +66,8 @@ for(i in data){
     //Check name consistency
     if(player.name != data[i][j*numColumns]){
       console.log("  Error, name mismatch: " + player.name + " and " + data[i][j*numColumns])
-      process.exit(1);
+      console.log("  (skipping match)");
+      continue;
     }
 
     //Check which week it belongs to
@@ -104,11 +105,13 @@ var funcs = require('./usefulFunctions.js');
 var compute = function(weeks){
   //Total score, damages, kills, deaths, time
   funcs.doTime(weeks);
-  funcs.totalSomething(weeks, 'W', 'Wins');
-  funcs.totalSomething(weeks, 'L', 'Losses');
+  funcs.convertPosToPoints(weeks);
+  funcs.totalSomething(weeks, 'Pts', 'Points');
+  //funcs.totalSomething(weeks, 'W', 'Wins');
+  //funcs.totalSomething(weeks, 'L', 'Losses');
   funcs.totalSomething(weeks, 'K', 'Kills');
   funcs.totalSomething(weeks, 'D', 'Deaths');
-  funcs.totalSomething(weeks, 'TK', 'Self Destructs');
+  funcs.totalSomething(weeks, 'SD', 'Self Destructs');
   funcs.totalSomething(weeks, 'DmgG', 'Damage Given');
   funcs.totalSomething(weeks, 'DmgR', 'Damage Recieved');
   funcs.totalSomething(weeks, 'Time', 'Total Time');
@@ -118,7 +121,8 @@ var compute = function(weeks){
   funcs.subtractSomething(weeks, 'Kills', 'Self Destructs', 'ModKills');
 
   //Compute K/D, DG/DR, DG/K, DR/D, Lfspn, Klspn, DPS, DRPS
-  funcs.doKDShiftingAllainces(weeks, 'Kills', 'Deaths', 'Self Destructs', 'K/D');
+  //funcs.doKDShiftingAllainces(weeks, 'Kills', 'Deaths', 'Self Destructs', 'K/D');
+  funcs.divideSomething(weeks, 'Kills', 'Deaths', 'K/D');
   funcs.divideSomething(weeks, 'Damage Given', 'Damage Recieved', 'DG/DR');
   funcs.divideSomething(weeks, 'Damage Given', 'Kills', 'DG/K');
   funcs.divideSomething(weeks, 'Damage Recieved', 'Deaths', 'DR/D');
@@ -137,7 +141,7 @@ var compute = function(weeks){
 
 
   //Clean up
-  funcs.trimSomething(weeks, 'Rnk');
+  funcs.trimSomething(weeks, 'Pos');
   funcs.trimSomething(weeks, 'Pts');
   funcs.trimSomething(weeks, 'W');
   funcs.trimSomething(weeks, 'L');

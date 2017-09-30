@@ -97,10 +97,21 @@ stuff.trimSomething = function(weeks, stat){
       delete current[stat];
   })
 }
+
+stuff.convertPosToPoints = function(weeks){
+  stuff.iterateMatches(weeks, function(current){
+    if(current.hasOwnProperty('Pos') && current['Pos'] != 'Lt' && current['Pos'] != 'No'){
+      current['Pts'] = 4 - parseInt(current['Pos']);
+    } else {
+      current['Pts'] = 0;
+    }
+  })
+}
+
 stuff.countMatches = function(weeks){
   var count = 0;
   stuff.iterateMatches(weeks, function(current){
-    if(current.hasOwnProperty('Rnk') && current['Rnk'] != 'Lt' && current['Rnk'] != 'No'){
+    if(current.hasOwnProperty('Pos') && current['Pos'] != 'Lt' && current['Pos'] != 'No'){
       count++;
     }
     current.matchCount = count;
