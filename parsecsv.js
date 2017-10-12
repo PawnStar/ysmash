@@ -36,14 +36,14 @@ var data = csvParse(fs.readFileSync(path.join(__dirname,args['in']), 'utf8'),{
   auto_parse:true
 });
 
-var numColumns = args.columns;
+var numColumns = parseInt(args.columns);
 var numRounds = data[0].length / numColumns;
 var numWeeks = headers[headers.length - numColumns];
 
-console.log("CSV parsed correctly . . . checking a few things.")
-
 if(args.verbose)
-  console.log("  Assuming " + numRounds + " rounds of data for " + numWeeks + " weeks");
+  console.log("CSV parsed correctly . . . checking a few things.")
+
+console.log("  Assuming " + numRounds + " rounds of data for " + numWeeks + " weeks");
 
 var numPlayers = data.length;
 
@@ -53,48 +53,65 @@ if(args.verbose)
 console.log();
 console.log("Extracting player data . . . ");
 
-//Convert [[,,,,,,]] structure into [{name:'',weeks:[{stat:''}]}]
-for(i in data){
-  var player = {
-    name: data[i][0],
-    weeks:[]
+if(args.verbose)
+  console.log("Chunking rows . . .")
+
+data = data.map(row=>{
+  var newRow = [];
+  var i,j,chunk = numColumns;
+  for (i=0,j=row.length; i<j; i+=chunk) {
+    newRow.push(row.slice(i,i+chunk));
   }
-  if(args.verbose)
-    console.log('  Parsing ' + player.name);
-  //For every match block
-  for(var j = 0; j < numRounds; j++){
-    //Check name consistency
-    if(player.name != data[i][j*numColumns]){
-      console.log("  Error, name mismatch: " + player.name + " and " + data[i][j*numColumns])
-      console.log("  (skipping match)");
-      continue;
+  return newRow;
+})
+
+if(args.verbose)
+  console.log("Reversing rows/columns");
+
+//Brilliant transpose stolen shamelessly from https://stackoverflow.com/a/36164530
+var transpose = m => m[0].map((x,i) => m.map(x => x[i]))
+
+data = transpose(data);
+
+var players = {};
+
+var addMatchToPlayer = function(playerName, weekNum, statBlock){
+  if(!players[playerName])
+    players[playerName] = [];
+
+  if(!players[playerName][weekNum])
+    players[playerName][weekNum] = [];
+
+  players[playerName][weekNum].push(statBlock);
+}
+
+for(weekNum in data){
+  console.log("Processing matches for week " + weekNum);
+
+  for(statBlock of data[weekNum]){
+    //Skip empty
+    var playerName = statBlock[0];
+    if(playerName == '') continue;
+
+    console.log('  - ' + statBlock[0]);
+    var extractedStats = {};
+
+    for(var i = 1; i < statBlock.length; i++){
+      var columnName = headers[i];
+      var columnValue = statBlock[i];
+      extractedStats[columnName] = columnValue;
     }
 
-    //Check which week it belongs to
-    var week = headers[j*numColumns];
-    if(args.verbose)
-      console.log('    Getting data for match '+j+' (week ' + week + ')');
-
-    //Get data
-    var match = {};
-    for(var k = j*numColumns + 1/*Skip name*/; k < (j+1)*numColumns; k++){
-      //If it's an empty string, ignore it
-      if(data[i][k] === '')
-        continue;
-      //Shove the raw data in property that matches its name
-      match[headers[k]] = data[i][k];
-    }
-
-    //Add it to the player's stuff (week-1 for zero-indexed)
-    if(typeof player.weeks[week-1] == 'undefined')
-      player.weeks[week-1] = [];
-    player.weeks[week-1].push(match)
+    addMatchToPlayer(playerName, weekNum, extractedStats);
   }
+}
 
-  if(args.verbose)
-    console.log("  " + player.name + " parsed correctly")
+data = [];
 
-  data[i] = player;
+for(player in players){
+  data.push({
+    name: player, weeks: players[player]
+  })
 }
 
 console.log("All players raw data parsed.\n")
