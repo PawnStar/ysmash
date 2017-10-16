@@ -4,7 +4,7 @@
   "description": "A stats site for Y-Smash",
   "main": "index.html",
   "scripts": {
-    "test": "grunt build"
+    "test": "grunt"
   },
   "repository": {
     "type": "git",
