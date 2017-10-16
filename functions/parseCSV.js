@@ -2,22 +2,27 @@ var fs = require('fs');
 var path = require('path');
 var csvParse = require('csv-parse/lib/sync');
 var funcs = require('./usefulFunctions.js');
-
+var math = require('mathjs');
 
 verbose = true;
 
-module.exports = function(path, numProps, seasonName, statConfig){
-  console.log("Reading data file " + path);
+showPlayersInWeek = false;
+verboseComputeLog = true;
+
+module.exports = function(config){
+  if(config.skip) return null;
+  console.log("Reading data file " + config.file + " for " + config.name);
+  var name = config.name;
   var headers;
 
-  var data = csvParse(fs.readFileSync(path), {
+  var data = csvParse(fs.readFileSync(path.join(__dirname, '..', config.file)), {
     columns: function(line){
       headers = line;
     },
     auto_parse:true
   });
 
-  var numColumns = numProps;
+  var numColumns = config.columns;
 
   if(data[0].length % numColumns !== 0){
     return new Error("Invalid number of columns");
@@ -73,12 +78,15 @@ module.exports = function(path, numProps, seasonName, statConfig){
       var playerName = statBlock[0];
       if(playerName == '') continue;
 
-      console.log('  - ' + statBlock[0]);
+      if(showPlayersInWeek)
+        console.log('  - ' + statBlock[0]);
       var extractedStats = {};
 
       for(var i = 1; i < statBlock.length; i++){
         var columnName = headers[i];
         var columnValue = statBlock[i];
+        if(columnValue === "")
+          columnValue = 0;
         extractedStats[columnName] = columnValue;
       }
 
@@ -99,58 +107,23 @@ module.exports = function(path, numProps, seasonName, statConfig){
   console.log("Preparing to compute stats . . .")
 
   var compute = function(weeks){
-    //Total score, damages, kills, deaths, time
-    funcs.doTime(weeks);
-    funcs.convertPosToPoints(weeks);
-    funcs.totalSomething(weeks, 'Pts', 'Points');
-    //funcs.totalSomething(weeks, 'W', 'Wins');
-    //funcs.totalSomething(weeks, 'L', 'Losses');
-    funcs.totalSomething(weeks, 'K', 'Kills');
-    funcs.totalSomething(weeks, 'D', 'Deaths');
-    funcs.totalSomething(weeks, 'SD', 'Self Destructs');
-    funcs.totalSomething(weeks, 'DmgG', 'Damage Given');
-    funcs.totalSomething(weeks, 'DmgR', 'Damage Recieved');
-    funcs.totalSomething(weeks, 'Time', 'Total Time');
-    funcs.totalSomething(weeks, 'Hit%', 'Hit%Sum');
+    var computations = config.computations;
 
-    //Get kills - self destructs
-    funcs.subtractSomething(weeks, 'Kills', 'Self Destructs', 'ModKills');
-
-    //Compute K/D, DG/DR, DG/K, DR/D, Lfspn, Klspn, DPS, DRPS
-    //funcs.doKDShiftingAllainces(weeks, 'Kills', 'Deaths', 'Self Destructs', 'K/D');
-    funcs.divideSomething(weeks, 'Kills', 'Deaths', 'K/D');
-    funcs.divideSomething(weeks, 'Damage Given', 'Damage Recieved', 'DG/DR');
-    funcs.divideSomething(weeks, 'Damage Given', 'Kills', 'DG/K');
-    funcs.divideSomething(weeks, 'Damage Recieved', 'Deaths', 'DR/D');
-    funcs.divideSomething(weeks, 'Total Time', 'Deaths', 'Lfspn');
-    funcs.divideSomething(weeks, 'Total Time', 'ModKills', 'Klspn');
-    funcs.divideSomething(weeks, 'Damage Given', 'Total Time', 'DPS');
-    funcs.divideSomething(weeks, 'Damage Recieved', 'Total Time', 'DRPS');
-
-    //Hit%
-    funcs.multiplySomething(weeks, 'Hit%', 'Time', 'Hit%Mod');
-    funcs.totalSomething(weeks, 'Hit%Mod', 'Hit%ModTotal');
-    funcs.divideSomething(weeks, 'Hit%ModTotal', 'Total Time', 'Hit%');
-
-    //Peak Damage
-    funcs.maxSomething(weeks, 'PkD', 'Peak Damage');
-
-
-    //Clean up
-    funcs.trimSomething(weeks, 'Pos');
-    funcs.trimSomething(weeks, 'Pts');
-    funcs.trimSomething(weeks, 'W');
-    funcs.trimSomething(weeks, 'L');
-    funcs.trimSomething(weeks, 'K');
-    funcs.trimSomething(weeks, 'D');
-    funcs.trimSomething(weeks, 'SD');
-    funcs.trimSomething(weeks, 'Min');
-    funcs.trimSomething(weeks, 'Sec');
-    funcs.trimSomething(weeks, 'DmgG');
-    funcs.trimSomething(weeks, 'DmgR');
-    funcs.trimSomething(weeks, 'PkD');
-    funcs.trimSomething(weeks, 'Time');
-    funcs.trimSomething(weeks, 'ModKills');
+    for(computation of computations){
+      if(verboseComputeLog)
+        console.log("   Computing " + JSON.stringify(computation));
+      if(typeof computation === 'string')
+        funcs.iterateMatches(weeks, (thisMatch, prevMatch, weekNum)=>{
+          math.eval(computation, thisMatch);
+          console.log(thisMatch);
+        })
+      else if(typeof computation === 'object' && computation.source)
+        funcs.totalSomething(weeks, computation.source, computation.dest);
+      else if(typeof computation === 'object' && computation.max)
+        funcs.maxSomething(weeks, computation.max, computation.as);
+      else
+        console.log("Unknown computation: " + computation);
+    }
   }
 
   console.log("Computing stats.");
@@ -165,8 +138,7 @@ module.exports = function(path, numProps, seasonName, statConfig){
     player.current = finalMatch;
   }
 
-  console.log("Stats");
-  console.log(data);
+  fs.writeFileSync('./output-stuff.txt', JSON.stringify(data));
 
   console.log("Finished computing.");
 
@@ -174,7 +146,8 @@ module.exports = function(path, numProps, seasonName, statConfig){
    * Sort and trim
    */
 
-  var stats = statConfig;
+
+  var stats = config.stats;
 
   for(stat in stats){
     console.log("Preparing leaderboards for " + stat);
@@ -191,14 +164,12 @@ module.exports = function(path, numProps, seasonName, statConfig){
           return week[week.length-1][config.stat]
         })
       return p;
-    }).sort(config.sort);
+    }).sort((a,b)=>math.eval(config.sort, {a: a, b: b}));
 
     //Do averages
     var total = ranks.map(function(player){
       //Possibly null
       if(!player.current) return 0;
-      if(player.current.max)
-        return player.current.max;
       return player.current;
     }).reduce(function(cont, current){
       return cont + current;
@@ -213,14 +184,14 @@ module.exports = function(path, numProps, seasonName, statConfig){
     //Store again
     stats[stat] = {
       name: stat,
-      average: null,
+      //average: average,
       graph: config.graph,
       data: ranks
     }
   }
 
   return {
-    name: seasonName,
+    name: name,
     weeks: numWeeks,
     data: stats
   }

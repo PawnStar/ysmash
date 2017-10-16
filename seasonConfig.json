@@ -1,0 +1,206 @@
+[
+  {
+    "skip": true,
+    "name": "Fall 2017",
+    "file": "Fall2017.csv",
+    "columns": 11,
+    "computations": [
+      "Time = (Min * 60) + Sec",
+      {"source": "K","dest": "Kills"},
+      {"source": "D","dest": "Deaths"},
+      {"source": "SD","dest": "Self_Destructs"},
+      {"source": "DmgG","dest": "Damage_Given"},
+      {"source": "DmgR","dest": "Damage_Recieved"},
+      {"source": "HitPercent","dest": "HitPercentSum"},
+      {"source": "Min","dest": "Minutes"},
+      {"source": "Sec","dest": "Seconds"},
+      {"source": "Time", "dest": "Total_Time"},
+      "Pts = 5 - Pos",
+      {"source": "Pts","dest": "Points"},
+      "K_D = Kills / Deaths",
+      "DG_DR = Damage_Given / Damage_Recieved",
+      "DG_per_K = Damage_Given / Kills",
+      "DR_per_D = Damage_Recieved / Deaths",
+      "Lfspn = Total_Time / Deaths",
+      "Klspn = Total_Time / Kills",
+      "DPS = Damage_Given / Total_Time",
+      "DRPS = Damage_Recieved / Total_Time",
+      "HitPercentMod = HitPercent * Time",
+      {"source": "HitPercentMod", "dest": "HitPercentModTotal"},
+      "HitPercent = HitPercentModTotal / Total_Time",
+      {"max": "PkD", "as": "Peak_Damage"}
+    ],
+    "stats": {
+      "Points": {
+        "stat":"Points",
+        "trim": 0,
+        "graph": false,
+        "sort":"b.current - a.current"
+      },
+      "K/D": {
+        "stat":"K_D",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "DG/DR": {
+        "stat":"DG_DR",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "DG/K": {
+        "stat":"DG_per_K",
+        "trim":10,
+        "graph": true,
+        "sort":"a.current - b.current"
+      },
+      "DR/D": {
+        "stat":"DR_per_D",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "Lifespan": {
+        "stat":"Lfspn",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "Killspan": {
+        "trim":10,
+        "stat":"Klspn",
+        "graph": true,
+        "sort":"a.current - b.current"
+      },
+      "DPS": {
+        "stat":"DPS",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "DRPS": {
+        "stat":"DRPS",
+        "trim":10,
+        "graph": true,
+        "sort":"a.current - b.current"
+      },
+      "Peak Damage": {
+        "trim":10,
+        "stat":"Peak_Damage",
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "Hit %": {
+        "stat":"HitPercent",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      }
+    },
+    "Rank":[
+      "Points",
+      "K_D",
+      "DG_DR"
+    ]
+  },{
+    "name": "Winter 2017",
+    "file": "Winter2017.csv",
+    "columns": 13,
+    "computations": [
+      "Time = (Min * 60) + Sec",
+      {"source": "W","dest": "Wins"},
+      {"source": "L","dest": "Losses"},
+      {"source": "K","dest": "Kills"},
+      {"source": "D","dest": "Deaths"},
+      {"source": "TK","dest": "Self_Destructs"},
+      {"source": "DmgG","dest": "Damage_Given"},
+      {"source": "DmgR","dest": "Damage_Recieved"},
+      {"source": "HitPercent","dest": "HitPercentSum"},
+      {"source": "Time", "dest": "Total_Time"},
+      "Pts = W",
+      {"source": "Pts","dest": "Points"},
+      "ModKills = Kills - Self_Destructs / 2",
+      "K_D = ModKills / Deaths",
+      "DG_DR = Damage_Given / Damage_Recieved",
+      "DG_per_K = Damage_Given / Kills",
+      "DR_per_D = Damage_Recieved / Deaths",
+      "Lfspn = Total_Time / Deaths",
+      "Klspn = Total_Time / Kills",
+      "DPS = Damage_Given / Total_Time",
+      "DRPS = Damage_Recieved / Total_Time",
+      "HitPercentMod = HitPercent * Time",
+      {"source": "HitPercentMod", "dest": "HitPercentModTotal"},
+      "HitPercent = HitPercentModTotal / Total_Time",
+      {"max": "PkD", "as": "Peak_Damage"}
+    ],
+    "stats": {
+      "Points": {
+        "stat":"Points",
+        "trim": 0,
+        "graph": false,
+        "sort":"b.current - a.current"
+      },
+      "K/D": {
+        "stat":"K_D",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "DG/DR": {
+        "stat":"DG_DR",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "DG/K": {
+        "stat":"DG_per_K",
+        "trim":10,
+        "graph": true,
+        "sort":"a.current - b.current"
+      },
+      "DR/D": {
+        "stat":"DR_per_D",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "Lifespan": {
+        "stat":"Lfspn",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "Killspan": {
+        "trim":10,
+        "stat":"Klspn",
+        "graph": true,
+        "sort":"a.current - b.current"
+      },
+      "DPS": {
+        "stat":"DPS",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "DRPS": {
+        "stat":"DRPS",
+        "trim":10,
+        "graph": true,
+        "sort":"a.current - b.current"
+      },
+      "Peak Damage": {
+        "trim":10,
+        "stat":"Peak_Damage",
+        "graph": true,
+        "sort":"b.current - a.current"
+      },
+      "Hit %": {
+        "stat":"HitPercent",
+        "trim":10,
+        "graph": true,
+        "sort":"b.current - a.current"
+      }
+    }
+  }
+]

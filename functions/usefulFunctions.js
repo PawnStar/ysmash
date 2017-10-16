@@ -33,9 +33,9 @@ stuff.totalSomething = function(weeks, statName, totalName){
 
     if(current.hasOwnProperty(statName)){
       if(total)
-        total += current[statName];
+        total = parseFloat(total) + parseFloat(current[statName]);
       else
-        total = current[statName];
+        total = parseFloat(current[statName]);
       current[totalName] = total;
     }else{
       current[totalName] = total;
@@ -55,10 +55,7 @@ stuff.maxSomething = function(weeks, statName, maxName){
       if(prev && prev.hasOwnProperty(maxName) && prev[maxName] && prev[maxName].max >= current[statName])
         current[maxName] = prev[maxName];
       else
-        current[maxName] = {
-          'max': current[statName],
-          'week': week + 1 // Plus one because it's not supposed to display zero-based index
-        }
+        current[maxName] = current[statName]
     }
   })
 };
@@ -66,7 +63,7 @@ stuff.maxSomething = function(weeks, statName, maxName){
 stuff.divideSomething = function(weeks, numerator, denominator, resultName){
   stuff.iterateMatches(weeks, function(current){
     if(current.hasOwnProperty(numerator) && current.hasOwnProperty(denominator))
-      current[resultName] = current[numerator] / current[denominator];
+      current[resultName] = parseFloat(current[numerator]) / parseFloat(current[denominator]);
   })
 };
 
@@ -80,14 +77,14 @@ stuff.combineWinLoss = function(weeks, wins, losses, resultName){
 stuff.multiplySomething = function(weeks, first, second, resultName){
   stuff.iterateMatches(weeks, function(current){
     if(current.hasOwnProperty(first) && current.hasOwnProperty(second))
-      current[resultName] = current[first] * current[second];
+      current[resultName] = parseFloat(current[first]) * parseFloat(current[second]);
   })
 };
 
 stuff.subtractSomething = function(weeks, first, second, resultName){
   stuff.iterateMatches(weeks, function(current){
     if(current.hasOwnProperty(first) && current.hasOwnProperty(second))
-      current[resultName] = current[first] - current[second];
+      current[resultName] = parseFloat(current[first]) - parseFloat(current[second]);
   })
 }
 
