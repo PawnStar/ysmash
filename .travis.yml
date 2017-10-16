@@ -1,5 +1,7 @@
 language: node_js
 
+before_script: npm install grunt-cli -g
+
 script: npm run test
 
 deploy:
