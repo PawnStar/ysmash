@@ -5,4 +5,4 @@ var path = require('path');
 
 var data = seasons.map(parseCSV);
 
-fs.writeFileSync(path.join(__dirname, 'output.json'), JSON.stringify(data, null, 2));
+fs.writeFileSync(path.join(__dirname, 'docs/stats.json'), JSON.stringify({seasons:data}, null, 2));

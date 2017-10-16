@@ -24,13 +24,6 @@ module.exports = function(grunt){
         }
       }
     },
-    'concat-json':{
-      'stats':{
-        files:{
-          "docs/stats.json": [ "seasons[]/*.json" ]
-        }
-      }
-    },
     pug: {
       compile: {
         options: {
