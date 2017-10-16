@@ -4,6 +4,7 @@ stuff.iterateMatches = function(weeks, callback){
   //Callback gets (thisMatch, prevMatch, weekNum)
   var prevMatch = null;
   for(var i = 0; i < weeks.length; i++){
+    if(!weeks[i]) continue;
     for(var j = 0; j < weeks[i].length; j++){
       callback(weeks[i][j], prevMatch, i);
       prevMatch = weeks[i][j];
