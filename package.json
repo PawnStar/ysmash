@@ -26,6 +26,7 @@
     "grunt-execute": "^0.2.2",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",
+    "mathjs": "^3.16.4",
     "minimist": "^1.2.0"
   },
   "devDependencies": {}
