@@ -92,7 +92,7 @@ module.exports = function(config){
             columnValue = config.defaults.all;
           else
             columnValue = 0;
-            
+
         extractedStats[columnName] = columnValue;
       }
 
@@ -142,8 +142,6 @@ module.exports = function(config){
     finalMatch = finalWeek[finalWeek.length - 1];
     player.current = finalMatch;
   }
-
-  fs.writeFileSync('./output-stuff.txt', JSON.stringify(data));
 
   console.log("Finished computing.");
 
