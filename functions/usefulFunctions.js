@@ -46,13 +46,13 @@ stuff.totalSomething = function(weeks, statName, totalName){
 
 stuff.maxSomething = function(weeks, statName, maxName){
   stuff.iterateMatches(weeks, function(current, prev, week){
-    if(!current.hasOwnProperty(statName)){
+    if(!current.hasOwnProperty(statName) || current[statName] === null){
       if(prev && prev.hasOwnProperty(maxName))
         current[maxName] = prev[maxName];
       else
         current[maxName] = null;
     }else{
-      if(prev && prev.hasOwnProperty(maxName) && prev[maxName] && prev[maxName].max >= current[statName])
+      if(prev && prev.hasOwnProperty(maxName) && prev[maxName] >= current[statName])
         current[maxName] = prev[maxName];
       else
         current[maxName] = current[statName]

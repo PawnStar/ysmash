@@ -107,6 +107,10 @@
     "name": "Winter 2017",
     "file": "Winter2017.csv",
     "columns": 13,
+    "defaults":{
+      "PkD": null,
+      "all": 0
+    },
     "computations": [
       "Time = (Min * 60) + Sec",
       {"source": "W","dest": "Wins"},
@@ -126,7 +130,7 @@
       "DG_per_K = Damage_Given / Kills",
       "DR_per_D = Damage_Recieved / Deaths",
       "Lfspn = Total_Time / Deaths",
-      "Klspn = Total_Time / Kills",
+      "Klspn = Total_Time / (Kills - Self_Destructs)",
       "DPS = Damage_Given / Total_Time",
       "DRPS = Damage_Recieved / Total_Time",
       "HitPercentMod = HitPercent * Time",

@@ -7,7 +7,7 @@ var math = require('mathjs');
 verbose = true;
 
 showPlayersInWeek = false;
-verboseComputeLog = true;
+verboseComputeLog = false;
 
 module.exports = function(config){
   if(config.skip) return null;
@@ -86,7 +86,13 @@ module.exports = function(config){
         var columnName = headers[i];
         var columnValue = statBlock[i];
         if(columnValue === "")
-          columnValue = 0;
+          if(config.defaults && config.defaults.hasOwnProperty(columnName))
+            columnValue = config.defaults[columnName];
+          else if(config.defaults && config.defaults.hasOwnProperty('all'))
+            columnValue = config.defaults.all;
+          else
+            columnValue = 0;
+            
         extractedStats[columnName] = columnValue;
       }
 
@@ -115,7 +121,6 @@ module.exports = function(config){
       if(typeof computation === 'string')
         funcs.iterateMatches(weeks, (thisMatch, prevMatch, weekNum)=>{
           math.eval(computation, thisMatch);
-          console.log(thisMatch);
         })
       else if(typeof computation === 'object' && computation.source)
         funcs.totalSomething(weeks, computation.source, computation.dest);
