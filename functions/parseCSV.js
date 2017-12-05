@@ -77,6 +77,10 @@ module.exports = function(config){
       //Skip empty
       var playerName = statBlock[0];
       if(playerName == '') continue;
+      //Check if player name in players list
+      if(config.players && !config.players.includes(playerName))
+        continue;
+
 
       if(showPlayersInWeek)
         console.log('  - ' + statBlock[0]);
