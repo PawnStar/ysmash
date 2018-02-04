@@ -122,6 +122,12 @@
         "trim":10,
         "graph": true,
         "sort":"b.current - a.current"
+      },
+      "Team Kills": {
+        "stat": "Self_Destructs",
+        "trim":10,
+        "graph": true,
+        "sort": "a.current - b.current"
       }
     },
     "Rank":[
