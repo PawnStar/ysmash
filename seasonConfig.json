@@ -57,31 +57,31 @@
       {"max": "PkD", "as": "Peak_Damage"}
     ],
     "stats": {
-      "Points": {
+      "Wins": {
         "stat":"Points",
         "trim": 0,
         "graph": false,
         "sort":"b.current - a.current"
       },
-      "K/D": {
+      "Kills / Deaths": {
         "stat":"K_D",
         "trim":10,
         "graph": true,
         "sort":"b.current - a.current"
       },
-      "DG/DR": {
+      "Damage Given / Received": {
         "stat":"DG_DR",
         "trim":10,
         "graph": true,
         "sort":"b.current - a.current"
       },
-      "DG/K": {
+      "Damage Given per Kill": {
         "stat":"DG_per_K",
         "trim":10,
         "graph": true,
         "sort":"a.current - b.current"
       },
-      "DR/D": {
+      "Damage Received per Death": {
         "stat":"DR_per_D",
         "trim":10,
         "graph": true,
@@ -99,13 +99,13 @@
         "graph": true,
         "sort":"a.current - b.current"
       },
-      "DPS": {
+      "Damage per Second": {
         "stat":"DPS",
         "trim":10,
         "graph": true,
         "sort":"b.current - a.current"
       },
-      "DRPS": {
+      "Damage Recieved per Second": {
         "stat":"DRPS",
         "trim":10,
         "graph": true,
