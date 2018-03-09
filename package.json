@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "build": "grunt",
-    "deploy": "git subtree split --prefix docs -b gh-pages; git push -f origin gh-pages:gh-pages; git branch -D gh-pages",
+    "deploy": "git subtree split --prefix docs -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages",
     "serve": "http-server -p 80 docs"
   },
   "repository": {
