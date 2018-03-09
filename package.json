@@ -4,7 +4,9 @@
   "description": "A stats site for Y-Smash",
   "main": "index.html",
   "scripts": {
-    "test": "grunt"
+    "build": "grunt",
+    "deploy": "git subtree split --prefix docs -b gh-pages; git push -f origin gh-pages:gh-pages; git branch -D gh-pages",
+    "serve": "http-server -p 80 docs"
   },
   "repository": {
     "type": "git",
