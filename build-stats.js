@@ -13,3 +13,4 @@ fs.writeFileSync(path.join(__dirname, 'docs/stats.json'), JSON.stringify({season
 // Make post.md for most recent seaon
 var post = makePost(data[0]);
 fs.writeFileSync(path.join(__dirname, 'docs/post.md'), post);
+fs.writeFileSync(path.join(__dirname, 'docs/stats.csv'), data[0].ranks)

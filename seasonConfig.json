@@ -18,7 +18,11 @@
       "PLSNERF",
       "TAG",
       "Altinator",
-      "Borkins -- NEED NAME",
+      "Borkins",
+      "SOTRH",
+      "Nemesis",
+      "REDPANTS",
+      "Vars",
       "youngster",
       "marcman!",
       "Fernando",
@@ -125,7 +129,7 @@
       },
       "Team Kills": {
         "stat": "Self_Destructs",
-        "trim":10,
+        "trim":0,
         "graph": true,
         "sort": "a.current - b.current"
       }

@@ -149,6 +149,36 @@ module.exports = function(config){
 
   console.log("Finished computing.");
 
+  /**
+   * Compute rankings
+   */
+  var rank = null;
+  if(config.Rank){
+    console.log("Computing rankings");
+    strippedPlayers = data.map(player=>{
+      return {
+        name: player.name,
+        ...player.current
+      }
+    })
+
+    var header = "Name"
+    for(stat of config.Rank){
+      header += ',' + stat
+    }
+
+    for(player of strippedPlayers){
+      var line = '"' + player.name + '"';
+      for(stat of config.Rank){
+        line += ',' + player[stat]
+      }
+      header += '\n' + line;
+      console.log(line);
+    }
+
+    rank = header;
+  }
+
   /*
    * Sort and trim
    */
@@ -200,6 +230,7 @@ module.exports = function(config){
   return {
     name: name,
     weeks: numWeeks,
-    data: stats
+    data: stats,
+    ranks: rank
   }
 }
